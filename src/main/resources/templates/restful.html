@@ -83,7 +83,7 @@
         }
 
         //测试删除用户HTTP的DELETE请求
-        deleteUser()
+        //deleteUser()
         function deleteUser() {
             $.ajax({
                 url:'./user/1',
@@ -97,6 +97,38 @@
                 }
             })
 
+        }
+
+        //测试请求响应码
+        postStatus()
+        function postStatus() {
+            //请求体
+            var params={
+                'userName':'user_name_new',
+                'sexCode':1,
+                'note':'note_new'
+            }
+            //var url='./user2/entity';
+            var url='./user2/annotation';
+
+            $.post({
+                url:url,
+                contentType:'application/json',
+                data:JSON.stringify(params),
+                success:function (result, status, jqXHR) {
+                    //获取响应头
+                    var success=jqXHR.getResponseHeader("success");
+                    //获取状态吗
+                    var status=jqXHR.status;
+                    alert("响应头参数是："+success+"，状态码是："+status);
+                    if(result==null){
+                        alert("插入失败");
+                        return;
+                    }else {
+                        alert("插入成功");
+                    }
+                }
+            })
         }
     </script>
 </head>

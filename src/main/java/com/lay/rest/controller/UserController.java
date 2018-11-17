@@ -2,15 +2,20 @@ package com.lay.rest.controller;
 
 import com.lay.rest.entity.User;
 import com.lay.rest.entity.enumeration.SexEnum;
+import com.lay.rest.exception.NotFoundException;
 import com.lay.rest.service.UserService;
 import com.lay.rest.vo.UserVo;
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -174,5 +179,46 @@ public class UserController {
     @GetMapping("/user/name")
     public String changeUserName(){
         return "change_user_name";
+    }
+
+    //使用状态码
+    @PostMapping("/user2/entity")
+    public ResponseEntity<UserVo> insertUserEntity(@RequestBody UserVo userVo){
+        User user=this.changeToEntity(userVo);
+        userService.inserUser(user);
+        UserVo result=this.changeToVo(user);
+        HttpHeaders headers=new HttpHeaders();
+        String success=(result==null||result.getId()==null)?"false":"true";
+        //设置响应头，比较常用的方法
+        headers.add("success",success);
+        //下面是使用集合LIST方式，不常用
+        //headers.put("success", Arrays.asList(success));
+        //返回创建成功的状态码
+        return new ResponseEntity<UserVo>(result,headers, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/user2/annotation")
+    //指定状态码为201 资源创建成功
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public UserVo insertUserAnnotation(@RequestBody UserVo userVo){
+        User user=this.changeToEntity(userVo);
+        userService.inserUser(user);
+        UserVo result=this.changeToVo(user);
+        return result;
+    }
+
+    //测试控制器通知异常处理
+    @GetMapping(value = "/user/exp/{id}",
+                //产生Json数据集
+                produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    //响应成功
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserVo getUserForExp(@PathVariable("id") Long id){
+        User user=userService.getUser(id);
+        //如果找不到用户就抛出异常，进入通知
+        throw new NotFoundException(1L,"找不到用户【"+id+"】信息");
+
     }
 }
