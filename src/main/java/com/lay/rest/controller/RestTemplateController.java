@@ -41,12 +41,15 @@ public class RestTemplateController {
     @GetMapping("/users/select")
     @ResponseBody
     public List<UserVo> findUsers() {
+        //使用map封装多个参数，提高可读性
         Map<String,Object> params=new HashMap<>();
         params.put("userName","user");
         params.put("note","note");
         params.put("start",2);
         params.put("limit",8);
+        //Map中的key和URI中的参数一一对应
         String url="http://localhost:8080/users/{userName}/{note}/{start}/{limit}";
+        //请求后端
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class, params);
         List<UserVo> userVos=responseEntity.getBody();
         return userVos;

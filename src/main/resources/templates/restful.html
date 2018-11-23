@@ -1,138 +1,138 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta charset="UTF-8">
-    <title>获取请求头参数</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.js"></script>
-    <script type="text/javascript">
-        //测试JavaSript代码
-        //post()
-        //测试post请求 创建用户
-        function post() {
-            var params={
-                'userName':'user_name_new',
-                'sexCode':1,
-                'note':'note_new'
-            }
-            $.post({
-                url:'./user',
-                contentType:"application/json",
-                data:JSON.stringify(params),
-                success:function (result) {
-                    if(result==null||result.id==null){
-                        alert("插入失败");
-                        return;
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <title>获取请求头参数</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.js"></script>
+        <script type="text/javascript">
+            //测试JavaSript代码
+            //post()
+            //测试post请求 创建用户
+            function post() {
+                var params={
+                    'userName':'user_name_new',
+                    'sexCode':1,
+                    'note':'note_new'
+                }
+                $.post({
+                    url:'./user',
+                    contentType:"application/json",
+                    data:JSON.stringify(params),
+                    success:function (result) {
+                        if(result==null||result.id==null){
+                            alert("插入失败");
+                            return;
+                        }
+                        alert("插入成功");
                     }
-                    alert("插入成功");
-                }
-            });
-        }
-
-        //get()
-        //测试get请求 获取用户
-        function get() {
-            $.get("./user/1",function (user,status) {
-                if(user==null){
-                    alert("结果为空");
-                }else {
-                    alert("用户信息为:"+JSON.stringify(user));
-                }
-            });
-        }
-
-        // 测试修改用户的Put请求
-        //updateUser();
-        function updateUser() {
-            var params={
-                'userName':'user_name_1_new',
-                'sexCode':1,
-                'note':'note_new_1'
+                });
             }
-            $.ajax({
-                url:'./user/1',
-                //此处告知使用put请求
-                type:'PUT',
-                contentType:'application/json',
-                data:JSON.stringify(params),
-                success:function (user,status) {
+
+            //get()
+            //测试get请求 获取用户
+            function get() {
+                $.get("./user/1",function (user,status) {
                     if(user==null){
                         alert("结果为空");
                     }else {
-                        alert(JSON.stringify(user));
+                        alert("用户信息为:"+JSON.stringify(user));
                     }
-                }
-            });
-        }
-
-        // 测试PATCH请求
-        //updateUserName()
-        function updateUserName() {
-            $.ajax({
-                url:'./user/1/user_name_patch',
-                type:'PATCH',
-                success:function (result, status) {
-                    if(result==null){
-                        alert("结果为空");
-                    }else {
-                        alert(result.success?"更新成功":"更新失败");
-                    }
-                }
-            })
-        }
-
-        //测试删除用户HTTP的DELETE请求
-        //deleteUser()
-        function deleteUser() {
-            $.ajax({
-                url:'./user/1',
-                type:'DELETE',
-                success:function (result) {
-                    if(result==null){
-                        alert("结果为空");
-                    }else {
-                        alert(result.success?"删除成功":"删除失败");
-                    }
-                }
-            })
-
-        }
-
-        //测试请求响应码
-        postStatus()
-        function postStatus() {
-            //请求体
-            var params={
-                'userName':'user_name_new',
-                'sexCode':1,
-                'note':'note_new'
+                });
             }
-            //var url='./user2/entity';
-            var url='./user2/annotation';
 
-            $.post({
-                url:url,
-                contentType:'application/json',
-                data:JSON.stringify(params),
-                success:function (result, status, jqXHR) {
-                    //获取响应头
-                    var success=jqXHR.getResponseHeader("success");
-                    //获取状态吗
-                    var status=jqXHR.status;
-                    alert("响应头参数是："+success+"，状态码是："+status);
-                    if(result==null){
-                        alert("插入失败");
-                        return;
-                    }else {
-                        alert("插入成功");
-                    }
+            // 测试修改用户的Put请求
+            //updateUser();
+            function updateUser() {
+                var params={
+                    'userName':'user_name_1_new',
+                    'sexCode':1,
+                    'note':'note_new_1'
                 }
-            })
-        }
-    </script>
-</head>
-<body>
-<h1>测试Restful下的请求</h1>
-</body>
-</html>
+                $.ajax({
+                    url:'./user/1',
+                    //此处告知使用put请求
+                    type:'PUT',
+                    contentType:'application/json',
+                    data:JSON.stringify(params),
+                    success:function (user,status) {
+                        if(user==null){
+                            alert("结果为空");
+                        }else {
+                            alert(JSON.stringify(user));
+                        }
+                    }
+                });
+            }
+
+            // 测试PATCH请求
+            //updateUserName()
+            function updateUserName() {
+                $.ajax({
+                    url:'./user/1/user_name_patch',
+                    type:'PATCH',
+                    success:function (result, status) {
+                        if(result==null){
+                            alert("结果为空");
+                        }else {
+                            alert(result.success?"更新成功":"更新失败");
+                        }
+                    }
+                })
+            }
+
+            //测试删除用户HTTP的DELETE请求
+            //deleteUser()
+            function deleteUser() {
+                $.ajax({
+                    url:'./user/1',
+                    type:'DELETE',
+                    success:function (result) {
+                        if(result==null){
+                            alert("结果为空");
+                        }else {
+                            alert(result.success?"删除成功":"删除失败");
+                        }
+                    }
+                })
+
+            }
+
+            //测试请求响应码
+            postStatus()
+            function postStatus() {
+                //请求体
+                var params={
+                    'userName':'user_name_new',
+                    'sexCode':1,
+                    'note':'note_new'
+                }
+                //var url='./user2/entity';
+                var url='./user2/annotation';
+
+                $.post({
+                    url:url,
+                    contentType:'application/json',
+                    data:JSON.stringify(params),
+                    success:function (result, status, jqXHR) {
+                        //获取响应头
+                        var success=jqXHR.getResponseHeader("success");
+                        //获取状态吗
+                        var status=jqXHR.status;
+                        alert("响应头参数是："+success+"，状态码是："+status);
+                        if(result==null){
+                            alert("插入失败");
+                            return;
+                        }else {
+                            alert("插入成功");
+                        }
+                    }
+                })
+            }
+        </script>
+    </head>
+    <body>
+    <h1>测试Restful下的请求</h1>
+    </body>
+    </html>
